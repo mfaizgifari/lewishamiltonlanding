@@ -71,22 +71,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Performance
 
-We've taken several steps to ensure the site is blazing fast:
+I have taken several steps to ensure the site is blazing fast:
 
 1. **AVIF Images:** All images have been converted to `.avif` for superior compression without quality loss.
 2. **Next.js `<Image>`:** Utilized across the site for automatic resizing, lazy loading, and priority fetching of critical LCP (Largest Contentful Paint) images.
 3. **Font Optimization:** `display: swap` and `preload` ensure fonts don't block rendering.
-
-## Deployment
-
-This project is configured and ready to be deployed on Vercel.
-
-1. Push your code to a GitHub repository.
-2. Import the project in your Vercel dashboard.
-3. Vercel will automatically detect Next.js and apply the correct build settings.
-4. Deploy!
-
-For a more detailed deployment walkthrough, check the generated `deploy_to_vercel.md` artifact.
 
 ## Credits
 
@@ -99,6 +88,3 @@ This software uses the following open source packages:
 - [Lenis](https://lenis.studiofreight.com/)
 
 ---
-
-> GitHub [@your-username](https://github.com/your-username) &nbsp;&middot;&nbsp;
-> Twitter [@your-twitter](https://twitter.com/your-twitter)
