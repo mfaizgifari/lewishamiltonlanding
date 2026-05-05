@@ -1,11 +1,11 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import { useWindowSize } from "react-use";
+import { useEffect, useState } from "react";
 
-const images = [
+const baseImages = [
     { src: "/Lewis pic.avif", alt: "Lewis Hamilton portrait", width: 600, height: 800 },
     { src: "/lewis car f1 track no 2.avif", alt: "Lewis Hamilton F1 car on track", width: 800, height: 500 },
     { src: "/lewis-hamilton-ferraril-closeup.avif", alt: "Lewis Hamilton Ferrari closeup", width: 500, height: 700 },
@@ -19,49 +19,56 @@ const images = [
     { src: "/44lewishero.avif", alt: "Lewis Hamilton 44 logo", width: 600, height: 400 },
 ];
 
-export default function GallerySection() {
-    const containerRef = useRef<HTMLDivElement>(null);
-    const { height } = useWindowSize();
-    
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-    });
+// Duplicate the images array to create a seamless loop
+const images = [...baseImages, ...baseImages];
 
-    const x = useTransform(scrollYProgress, [0, 1], ["0%", "-75%"]);
-    const smoothX = useSpring(x, { stiffness: 100, damping: 20 });
+export default function GallerySection() {
+    const { height } = useWindowSize();
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <section 
             id="gallery" 
-            ref={containerRef} 
-            className="bg-[#0a0a0a] border-t border-[#222]"
-            style={{ height: "400vh" }} // Increase height to create scroll space
+            className="bg-[#0a0a0a] border-t border-[#222] py-24 overflow-hidden flex flex-col justify-center"
         >
-            <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-                <div className="container mx-auto px-6 md:px-12 mb-8">
-                     <h2 className="font-heading text-4xl md:text-5xl font-bold text-white uppercase tracking-widest px-4 pt-12 md:pt-24">
-                        <span className="text-[var(--color-primary-red)] text-glow-red md:mr-4">Visual</span>
-                        Archive
-                    </h2>
-                </div>
+            <div className="container mx-auto px-6 md:px-12 mb-12">
+                 <h2 className="font-heading text-4xl md:text-5xl font-bold text-white uppercase tracking-widest px-4">
+                    <span className="text-[var(--color-primary-red)] text-glow-red md:mr-4">Visual</span>
+                    Archive
+                </h2>
+            </div>
 
-                <motion.div style={{ x: smoothX }} className="flex gap-4 md:gap-8 px-6 md:px-12 items-center w-max pb-24">
+            {/* Marquee Container */}
+            <div className="w-full overflow-hidden flex">
+                <motion.div 
+                    animate={{
+                        x: ["0%", "-50%"]
+                    }}
+                    transition={{
+                        x: {
+                            repeat: Infinity,
+                            repeatType: "loop",
+                            duration: 40,
+                            ease: "linear",
+                        },
+                    }}
+                    className="flex gap-4 md:gap-8 px-4 items-center w-max"
+                >
                     {images.map((img, i) => {
-                        // Alternate alignment slightly for a more dynamic look
                         const alignSelf = i % 3 === 0 ? "flex-start" : i % 3 === 1 ? "center" : "flex-end";
                         
                         return (
                             <motion.div
                                 key={i}
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true, margin: "200px" }}
-                                transition={{ duration: 0.6, delay: i * 0.1 }}
                                 className={`relative overflow-hidden group rounded-lg border border-[#333] shadow-xl bg-[#111] shrink-0`}
                                 style={{ 
                                     width: `${Math.max(280, Math.min(img.width / 1.5, 600))}px`,
                                     height: `${Math.max(300, Math.min(img.height / 1.5, 500))}px`,
-                                    alignSelf: height > 800 ? alignSelf : 'center'
+                                    alignSelf: mounted && height > 800 ? alignSelf : 'center'
                                 }}
                             >
                                 <Image
