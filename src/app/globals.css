@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary-red: #DC0000;
+  --color-matte-black: #0A0A0A;
+  --color-accent-yellow: #FFD100;
+  --color-carbon-dark: #121212;
+
+  --color-background: var(--color-matte-black);
+  --color-foreground: #ededed;
+
+  --font-sans: var(--font-outfit), sans-serif;
+  --font-heading: var(--font-oswald), sans-serif;
+
+  --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #0A0A0A;
+  --foreground: #ededed;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-style: italic;
+}
+
+/* Base custom utilities */
+@utility text-glow-red {
+  text-shadow: 0 0 20px rgba(220, 0, 0, 0.6), 0 0 40px rgba(220, 0, 0, 0.4);
+}
+
+@utility text-glow-yellow {
+  text-shadow: 0 0 15px rgba(255, 209, 0, 0.5);
+}
+
+@utility bg-carbon {
+  background-color: #0A0A0A;
+  background-image: radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0A0A0A 80%);
+}
+
+/* Smooth Scrolling class utilities */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
 }
